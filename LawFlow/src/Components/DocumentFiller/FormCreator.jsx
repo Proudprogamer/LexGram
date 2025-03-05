@@ -23,16 +23,17 @@ function FormCreator({ initialData }) {
     // Function to stop recording and process audio
     const stopRecording = async () => {
         if (!recorder) return;
-
+    
         recorder.stopRecording(async () => {
             const blob = recorder.getBlob();
             const reader = new FileReader();
             reader.readAsDataURL(blob);
-
+    
             reader.onloadend = async () => {
-                const base64Audio = reader.result.substr(22,);
+                const base64Audio = reader.result.split(",")[1]; // Extract actual Base64 data
+    
                 console.log("Base64 Audio:", base64Audio);
-
+    
                 const body = {
                     audioContent: base64Audio,
                     modelId: "660e9e144e7d42484da6356d",
@@ -40,25 +41,32 @@ function FormCreator({ initialData }) {
                     task: "asr",
                     userId: null
                 };
-
+    
                 try {
-                    const response = await fetch('http://localhost:3000/v1/att/convert', {
+                    const response = await fetch("http://localhost:3000/v1/att/convert", {
                         method: "POST",
                         body: JSON.stringify(body),
                         headers: {
-                            'Content-Type': 'application/json'
+                            "Content-Type": "application/json"
                         }
                     });
-
+    
                     const text_data = await response.json();
-                    const transcribedText = text_data.data.source;
-
-                    // Update the form field with the transcribed text
+                    console.log("ASR API Response:", text_data);
+    
+                    const transcribedText = text_data.data?.source;
+    
+                    if (!transcribedText) {
+                        console.error("No transcription received from ASR API.");
+                        return;
+                    }
+    
+                    // ✅ Set transcribed text in form field
                     setFormData(prevData => ({
                         ...prevData,
                         [recordingField]: transcribedText
                     }));
-
+    
                     setRecordingField(null);
                     setRecorder(null);
                 } catch (e) {
@@ -67,6 +75,7 @@ function FormCreator({ initialData }) {
             };
         });
     };
+    
 
     const handlesubmit = async(e)=>{
         e.preventDefault();
