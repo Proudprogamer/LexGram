@@ -8,14 +8,42 @@ function Login() {
     const [otp, setOtp] = useState("");
     const [showOtpInput, setShowOtpInput] = useState(false);
 
-    // Function to send OTP
+    // ✅ **Send OTP**
     const sendOtp = async () => {
-        
+        try {
+            const response = await axios.post("http://localhost:3000/api/otp/send", {
+                phoneNumber: number
+            });
+
+            if (response.data.success) {
+                setShowOtpInput(true);
+                alert("OTP sent successfully!");
+            } else {
+                alert("Failed to send OTP");
+            }
+        } catch (error) {
+            console.error("Error sending OTP:", error);
+            alert("Error sending OTP");
+        }
     };
 
-    // Function to verify OTP
+    // ✅ **Verify OTP**
     const verifyOtp = async () => {
-        
+        try {
+            const response = await axios.post("http://localhost:3000/api/otp/verify", {
+                phoneNumber: number,
+                otp: otp
+            });
+
+            if (response.data.success) {
+                alert("OTP verified successfully!");
+            } else {
+                alert("Invalid OTP. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error verifying OTP:", error);
+            alert("Error verifying OTP");
+        }
     };
 
     return (
