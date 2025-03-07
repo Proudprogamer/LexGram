@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import RecordRTC from "recordrtc";
 
-function FormCreator({ initialData, jsonstring }) {
+function FormCreator({ initialData, jsonstring, lang }) {
     const [formData, setFormData] = useState(() => ({ ...initialData }));
     const [recordingField, setRecordingField] = useState(null); // Track which field is recording
     const [recorder, setRecorder] = useState(null);
+
+    console.log(lang)
 
     // ✅ Handle text input changes
     const handleChange = (e, key) => {
@@ -39,10 +41,7 @@ function FormCreator({ initialData, jsonstring }) {
 
                 const body = {
                     audioContent: base64Audio,
-                    modelId: "660e9e144e7d42484da6356d",
-                    source: "te",
-                    task: "asr",
-                    userId: null
+                    language : lang
                 };
 
                 try {
@@ -51,6 +50,8 @@ function FormCreator({ initialData, jsonstring }) {
                         body: JSON.stringify(body),
                         headers: { "Content-Type": "application/json" },
                     });
+
+                    console.log("language" + lang);
 
                     const text_data = await response.json();
                     console.log("ASR API Response:", text_data);
@@ -89,10 +90,8 @@ function FormCreator({ initialData, jsonstring }) {
     const values = Object.values(formData); // ✅ Extract user-filled values for translation
 
     const body = {
-        modelId: "67b871747d193a1beb4b847e", // ✅ Ensure this is the correct translation model
-        task: "translation",
+        language: lang, // ✅ Ensure this is the correct translation model
         input: [{ source: JSON.stringify(values) }], // ✅ Translate only values
-        userId: null,
     };
 
     try {

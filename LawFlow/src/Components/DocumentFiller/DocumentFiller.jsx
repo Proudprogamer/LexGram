@@ -74,10 +74,8 @@ function DocumentFiller() {
 
       // Step 3: Translate extracted keys
       const translationBody = {
-        modelId: "65686cca00d64169e2f8f3e7", // Use the correct translation model
-        task: "translation",
-        input: [{ source: extractedKeys }],
-        userId: null,
+        language : currlang,
+        extractedKeys : extractedKeys
       };
 
       const translationResponse = await fetch("http://localhost:3000/v1/english/translate", {
@@ -134,6 +132,18 @@ function DocumentFiller() {
                   <option value="" disabled>Select a language...</option>
                   <option value="Hindi">Hindi</option>
                   <option value="Telugu">Telugu</option>
+                  <option value="Marathi">Marathi</option>
+                  <option value="Malayalam">Malayalam</option>
+                  <option value="Tamil">Tamil</option>
+                  <option value="Punjabi">Punjabi</option>
+                  <option value="Bengali">Bengali</option>
+                  <option value="Assasamese">Assasamese</option>
+                  <option value="Urdu">Urdu</option>
+                  <option value="Nepali">Nepali</option>
+                  <option value="Goan_Konkani">Goan Konkani</option>
+                  <option value="Bodo">Bodo</option>
+                  <option value="Kannada">Kannada</option>
+                  <option value="Sanskrit">Sanskrit</option>
                 </select>
               </div>
               
@@ -177,7 +187,7 @@ function DocumentFiller() {
             {res && (
               <div className="bg-gray-900 rounded-lg p-6">
                 <h2 className="text-xl font-semibold mb-4 border-b border-gray-700 pb-2">Form Generator</h2>
-                <FormCreator initialData={JSON.parse(jsonstring)} />
+                <FormCreator initialData={JSON.parse(jsonstring)} lang={currlang} />
               </div>
             )}
           </div>
