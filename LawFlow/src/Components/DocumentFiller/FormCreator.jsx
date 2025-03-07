@@ -1,39 +1,42 @@
 import React, { useState } from "react";
 import RecordRTC from "recordrtc";
 
-function FormCreator({ initialData }) {
+function FormCreator({ initialData, jsonstring }) {
     const [formData, setFormData] = useState(() => ({ ...initialData }));
     const [recordingField, setRecordingField] = useState(null); // Track which field is recording
     const [recorder, setRecorder] = useState(null);
 
-    // Function to handle text input changes
+    // ✅ Handle text input changes
     const handleChange = (e, key) => {
         setFormData({ ...formData, [key]: e.target.value });
     };
 
-    // Function to start recording for a specific field
+    // ✅ Start Recording for a Specific Field
     const startRecording = async (key) => {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const newRecorder = new RecordRTC(stream, { type: "audio" });
-        newRecorder.startRecording();
-        setRecorder(newRecorder);
-        setRecordingField(key);
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const newRecorder = new RecordRTC(stream, { type: "audio" });
+            newRecorder.startRecording();
+            setRecorder(newRecorder);
+            setRecordingField(key);
+        } catch (error) {
+            console.error("Error accessing microphone:", error);
+        }
     };
 
-    // Function to stop recording and process audio
+    // ✅ Stop Recording & Process Audio
     const stopRecording = async () => {
         if (!recorder) return;
-    
+
         recorder.stopRecording(async () => {
             const blob = recorder.getBlob();
             const reader = new FileReader();
             reader.readAsDataURL(blob);
-    
+
             reader.onloadend = async () => {
                 const base64Audio = reader.result.split(",")[1]; // Extract actual Base64 data
-    
                 console.log("Base64 Audio:", base64Audio);
-    
+
                 const body = {
                     audioContent: base64Audio,
                     modelId: "660e9e144e7d42484da6356d",
@@ -41,80 +44,113 @@ function FormCreator({ initialData }) {
                     task: "asr",
                     userId: null
                 };
-    
+
                 try {
                     const response = await fetch("http://localhost:3000/v1/att/convert", {
                         method: "POST",
                         body: JSON.stringify(body),
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
+                        headers: { "Content-Type": "application/json" },
                     });
-    
+
                     const text_data = await response.json();
                     console.log("ASR API Response:", text_data);
-    
+
                     const transcribedText = text_data.data?.source;
-    
+
                     if (!transcribedText) {
                         console.error("No transcription received from ASR API.");
                         return;
                     }
-    
-                    // ✅ Set transcribed text in form field
+
+                    // ✅ Update the correct form field with transcribed text
                     setFormData(prevData => ({
                         ...prevData,
                         [recordingField]: transcribedText
                     }));
-    
+
                     setRecordingField(null);
                     setRecorder(null);
                 } catch (e) {
-                    console.log("There was an error:", e.message);
+                    console.error("Error in ASR API:", e.message);
                 }
             };
         });
     };
-    
 
-    const handlesubmit = async(e)=>{
-        e.preventDefault();
-        console.log("Final form data : "+ JSON.stringify(formData));
-        
-        const body = {
-            modelId: "67b871747d193a1beb4b847e",
-            task: "translation",
-            input: [{ source: JSON.stringify(formData)}],
-            userId: null,
-        };
+    // ✅ Handle Form Submission
+    const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    console.log("📝 Final Form Data Before Translation:", JSON.stringify(formData));
+
+    // ✅ Get English keys from `cleanedResponse`
+    const jsonObject = JSON.parse(localStorage.getItem("cleanedResponse")); // Get extracted English keys
+    const englishKeys = Object.keys(jsonObject); // ✅ English keys from AI extraction
+    const values = Object.values(formData); // ✅ Extract user-filled values for translation
+
+    const body = {
+        modelId: "67b871747d193a1beb4b847e", // ✅ Ensure this is the correct translation model
+        task: "translation",
+        input: [{ source: JSON.stringify(values) }], // ✅ Translate only values
+        userId: null,
+    };
+
+    try {
+        const translationResponse = await fetch("http://localhost:3000/v1/x/english/translate", {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: { "Content-Type": "application/json" },
+        });
+
+        if (!translationResponse.ok) throw new Error("Translation API failed");
+
+        const text_data = await translationResponse.json();
+        console.log("🌍 Translation API Response:", text_data);
+
+        let translatedString = text_data.output[0]?.target;
+        if (!translatedString) {
+            console.error("Translation API did not return expected output.");
+            return;
+        }
+
+        // ✅ Fix JSON formatting issues (if any)
+        translatedString = translatedString
+            .replace(/“|”/g, '"') // Convert fancy quotes to normal quotes
+            .replace(/'([^']+)'/g, '"$1"') // Fix single quotes inside values
+            .replace(/(\w+)\s*:\s*([^\{\["\d][^,]*)/g, '"$1": "$2"') // Ensure missing quotes around values
+            .replace(/,([^}\]])/g, ',$1') // Fix missing commas
+            .replace(/(\w+):(?=[^"{}\[\],])/g, '"$1":'); // Ensure keys are enclosed in quotes
+
+        console.log("📝 Cleaned JSON String:", translatedString);
+
+        // ✅ Parse translated JSON safely
         try {
-            const translationResponse = await fetch("http://localhost:3000/v1/x/english/translate", {
-                method: "POST",
-                body: JSON.stringify(body),
-                headers: { "Content-Type": "application/json" },
+            let translatedValues = JSON.parse(translatedString);
+
+            // ✅ Map translated values back to extracted English keys
+            const translatedJson = {};
+            englishKeys.forEach((key, index) => {
+                translatedJson[key] = translatedValues[index] || ""; // Assign translated value to corresponding key
             });
 
-            if (!translationResponse.ok) throw new Error("Translation API failed");
+            console.log("✅ Final Translated JSON with English Keys:", translatedJson);
+        } catch (parseError) {
+            console.error("❌ Error parsing translated JSON:", parseError);
+            console.error("❌ Raw Response:", translatedString); // ✅ Log incorrect format for debugging
+        }
 
-            const text_data = await translationResponse.text();
-            // const translated = JSON.parse(text_data);
-            console.log(JSON.parse(JSON.parse(text_data).output[0].target));
-            
-            } catch (error) {
-                console.error("Error processing JSON:", error);
-            }
-            
-        //convert to english here
-
+    } catch (error) {
+        console.error("❌ Error processing translation:", error);
     }
+};
+
 
     return (
         <div className="p-6 bg-black text-white mt-5">
-            <form onSubmit={(e) => handlesubmit(e)} className="space-y-4 ml-110">
+            <form onSubmit={handleSubmit} className="space-y-4 ml-110">
                 {Object.keys(formData).map((key) => (
                     <div key={key} className="flex flex-col">
-                        <label className="mb-1">{key}</label>
+                        <label className="mb-1">{key.replace(/_/g, " ")}</label>
                         <div className="flex items-center space-x-2">
                             <input
                                 type="text"
