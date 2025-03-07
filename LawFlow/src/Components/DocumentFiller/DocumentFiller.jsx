@@ -66,6 +66,7 @@ function DocumentFiller() {
       // Step 2: Clean AI response (remove markdown formatting)
       const cleanedResponse = data_obj.response.replace(/```json|```/g, "").trim();
       console.log("Cleaned JSON Response:", cleanedResponse);
+      localStorage.setItem("cleanedResponse", cleanedResponse);
 
       const jsonObject = JSON.parse(cleanedResponse);
       const extractedKeys = Object.keys(jsonObject).join(", ");

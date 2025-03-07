@@ -16,12 +16,7 @@ const { sender } = require('./Routes/SMS/smssender')
 const app = express();
 
 // ✅ Fix CORS to allow frontend connection
-app.use(cors({
-    origin: "http://localhost:5175",  // Allow React frontend
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
-}));
+app.use(cors());
 
 app.options("*", cors());
 app.use(express.json());

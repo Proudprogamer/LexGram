@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, use, useState } from "react";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Sidebar/Sidebar";
@@ -7,14 +7,13 @@ function Signup() {
     const [number, setNumber] = useState("");
     const [otp, setOtp] = useState("");
     const [showOtpInput, setShowOtpInput] = useState(false);
-    const [userotp, setuserotp] = useState();
 
     const otpp = Math.floor(100000 + Math.random() * 900000);
+    const [userotp, setuserotp] = useState();
 
     // Function to send OTP
     const sendOtp = async () => {
         setShowOtpInput(true);
-
         const body = {
             phone: number,
             message : otpp
@@ -60,7 +59,6 @@ function Signup() {
 
             
         }
-
 
 
     };

@@ -123,22 +123,43 @@ function FormCreator({ initialData, jsonstring }) {
 
         console.log("📝 Cleaned JSON String:", translatedString);
 
-        // ✅ Parse translated JSON safely
+        // Retrieve the cleanedResponse object from localStorage
+        const storedResponse = localStorage.getItem("cleanedResponse");
+
+        // ✅ Convert it into a valid JSON format
+        const fixedString = translatedString.replace(/,\s*"/g, '", "'); // Ensure proper JSON commas
+
         try {
-            let translatedValues = JSON.parse(translatedString);
-
-            // ✅ Map translated values back to extracted English keys
-            const translatedJson = {};
-            englishKeys.forEach((key, index) => {
-                translatedJson[key] = translatedValues[index] || ""; // Assign translated value to corresponding key
-            });
-
-            console.log("✅ Final Translated JSON with English Keys:", translatedJson);
-        } catch (parseError) {
-            console.error("❌ Error parsing translated JSON:", parseError);
-            console.error("❌ Raw Response:", translatedString); // ✅ Log incorrect format for debugging
+            translatedString = JSON.parse(fixedString); // Parse into an array
+            console.log("✅ Parsed Array:", translatedResponse);
+        } catch (error) {
+            console.error("❌ JSON Parsing Error:", error);
         }
 
+        let translatedArray=[];
+
+        try {
+            translatedArray = JSON.parse(translatedString);
+            localStorage.setItem("translated-array", translatedArray);
+        } catch (error) {
+            console.error("❌ JSON Parsing Error:", error);
+        }
+
+        // Assuming this is stored in localStorage
+        let cleanedResponse = JSON.parse(localStorage.getItem("cleanedResponse")); 
+
+        // Example: cleanedResponse = { "What is your name?": "", "What is your favorite sport?": "", "Which month do you prefer?": "" }
+
+        // ✅ Get object keys and update values
+        Object.keys(cleanedResponse).forEach((key, index) => {
+            cleanedResponse[key] = translatedArray[index] || ""; // ✅ Fill with answer or empty string if index is out of bounds
+        });
+
+        // ✅ Store updated object back into localStorage
+        console.log("CleanedResponse is :", JSON.stringify(cleanedResponse));
+
+
+        // ✅ Parse translated JSON safely
     } catch (error) {
         console.error("❌ Error processing translation:", error);
     }
