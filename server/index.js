@@ -7,6 +7,8 @@ const { translator } = require("./Routes/Translators/translator");
 const { filereader } = require("./Routes/FileReader/filereader");
 const { extranslator } = require("./Routes/E-Xtranslator/E-X.translator");
 const { xetranslator } = require("./Routes/X-Etranslator/xetranslator");
+const { newuser } = require('./Routes/User/user');
+const { sender } = require('./Routes/SMS/smssender')
 
 const app = express();
 
@@ -29,6 +31,10 @@ app.use("/v1/att", translator);
 app.use("/document", filereader);
 app.use("/v1/english", extranslator);
 app.use("/v1/x/english", xetranslator);
+app.use('/user', newuser);
+app.use('/sms', sender);
+
+
 
 app.listen(3000, () => {
     console.log(`🚀 Backend running on http://localhost:3000`);
