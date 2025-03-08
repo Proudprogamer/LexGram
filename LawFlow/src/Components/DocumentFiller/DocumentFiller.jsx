@@ -111,7 +111,7 @@ function DocumentFiller() {
   };
 
   return (
-    <div className="flex h-screen bg-black text-white">
+    <div className="flex h-screen bg-black ml-[-1px] text-white">
       <Sidebar />
       <div className="flex flex-col flex-1">
         <Navbar />
