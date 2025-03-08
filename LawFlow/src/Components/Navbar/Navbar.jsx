@@ -152,10 +152,10 @@ function Navbar() {
                         </div>
                     ) : (
                         <button 
-                            onClick={() => navigate("/login")} 
+                            onClick={() => navigate("/sign-up")} 
                             className="bg-black text-white px-4 py-2 rounded-lg border border-gray-800 hover:bg-gray-900"
                         >
-                            Login
+                            Sign Up
                         </button>
                     )}
                 </div>

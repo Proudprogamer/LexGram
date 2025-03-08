@@ -111,7 +111,7 @@ function DocumentFiller() {
   };
 
   return (
-    <div className="flex h-screen bg-black ml-[-1px] text-white">
+    <div className="flex h-screen bg-black ">
       <Sidebar />
       <div className="flex flex-col flex-1">
         <Navbar />
@@ -120,7 +120,7 @@ function DocumentFiller() {
             <h1 className="text-3xl font-bold mb-6">Document Filler</h1>
             
             <div className="bg-gray-900 rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4 border-b border-gray-700 pb-2">Upload Document</h2>
+              <h2 className="text-xl font-semibold mb-4 border-b border-gray-700 pb-2 text-white">Upload Document</h2>
               
               <div className="mb-4">
                 <label className="block text-gray-400 mb-2">Select Language</label>
@@ -171,7 +171,7 @@ function DocumentFiller() {
             </div>
             
             {loading && (
-              <div className="w-full flex justify-center items-center p-4">
+              <div className=" ml-106">
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
                 <p className="ml-3">Processing document...</p>
               </div>
@@ -186,7 +186,7 @@ function DocumentFiller() {
             
             {res && (
               <div className="bg-gray-900 rounded-lg p-6">
-                <h2 className="text-xl font-semibold mb-4 border-b border-gray-700 pb-2">Form Generator</h2>
+                <h2 className="text-xl font-semibold mb-4 border-b border-gray-700 pb-2 text-white">Form Generator</h2>
                 <FormCreator initialData={JSON.parse(jsonstring)} lang={currlang} />
               </div>
             )}
