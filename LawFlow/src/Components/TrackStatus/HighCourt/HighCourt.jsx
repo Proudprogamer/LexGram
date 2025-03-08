@@ -15,7 +15,7 @@ function HighCourt() {
     const body = JSON.stringify(Object.fromEntries(formData));
 
     try {
-      const response = await fetch(`http://localhost:3000/high-court/${endpoint}`, {
+      const response = await fetch(`https://lfbackend-hazel.vercel.app/high-court/${endpoint}`, {
         method: "POST",
         body: body,
         headers: { 'Content-Type': 'application/json' },
