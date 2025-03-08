@@ -1,6 +1,7 @@
 # LawFlow
 
 LawFlow is a web platform designed to help rural people who do not understand English navigate legal procedures with ease. Our platform enables users to fill legal forms in their preferred language, submit documents, and utilize speech input for seamless form completion. Additionally, LawFlow provides a legal forum and a case tracking system for better legal awareness and support.
+You can also try our website from [here](https://lawflow.vercel.app)!
 
 ## Features
 
@@ -104,5 +105,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Contact
 For queries or collaboration, reach out to us at: 
 - 📧 Email: siddharthpg20@gmail.com
-- 🌐 Website: [LawFlow](https://lawflow.com)
+- 🌐 Website: [LawFlow](https://lawflow.vercel.app)
 - 🐙 GitHub: [LawFlow](https://github.com/Proudprogamer/Vortex)
