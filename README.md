@@ -82,9 +82,12 @@ node index.js
 ### Environment Variables
 Create a `.env` file in the root directory and add the following:
 ```env
-REACT_APP_FIREBASE_API_KEY=your_api_key
-REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
-REACT_APP_TRANSLATION_API_KEY=your_translation_api_key
+GROQ_API_KEY=
+GEMINI_API_KEY=
+SMS_API_KEY=
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_SERVICE_SID=
 ```
 
 ## Contributing
