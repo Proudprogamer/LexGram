@@ -148,13 +148,13 @@ function DocumentFiller() {
               </div>
               
               <div className="mb-4">
-                <label className="block text-gray-400 mb-2">Upload File (.docx or .pdf)</label>
+                <label className="block text-gray-400 mb-2">Upload File (.docx)</label>
                 <input
                   onChange={fileselector}
                   className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-3"
                   type="file"
                 />
-                <p className="mt-2 text-sm text-gray-500">Only .docx and .pdf files are supported</p>
+                <p className="mt-2 text-sm text-gray-500">Only .docx is supported</p>
               </div>
               
               <button
