@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Navbar from "../Navbar/Navbar";
@@ -10,6 +12,7 @@ function DocumentFiller() {
   const [error, setError] = useState(null);
   const [res, setRes] = useState(false);
   const [jsonstring, setJsonstring] = useState("");
+  const [translatedDoc, setTranslatedDoc] = useState(""); // NEW for full document translation
 
   const fileselector = (e) => {
     setCurrfile(e.target.files[0]);
@@ -49,7 +52,7 @@ function DocumentFiller() {
       formData.append("file", currfile);
 
       // Step 1: Send file to backend for AI-based key extraction
-      const response = await fetch("https://lfbackend-hazel.vercel.app/document/reader", {
+      const response = await fetch("http://localhost:3000/document/reader", {
         method: "POST",
         body: formData,
       });
@@ -59,7 +62,7 @@ function DocumentFiller() {
       const data_obj = await response.json();
       console.log("Backend response:", data_obj);
 
-      if (!data_obj.response) {
+      if (!data_obj.response || !data_obj.fullText) {
         throw new Error("Invalid response from backend.");
       }
 
@@ -72,13 +75,13 @@ function DocumentFiller() {
       const extractedKeys = Object.keys(jsonObject).join(", ");
       console.log("Extracted Keys:", extractedKeys);
 
-      // Step 3: Translate extracted keys
+      // Step 3: Translate extracted keys (for Form)
       const translationBody = {
-        language : currlang,
-        extractedKeys : extractedKeys
+        language: currlang,
+        extractedKeys: extractedKeys,
       };
 
-      const translationResponse = await fetch("https://lfbackend-hazel.vercel.app/v1/english/translate", {
+      const translationResponse = await fetch("http://localhost:3000/v1/english/translate", {
         method: "POST",
         body: JSON.stringify(translationBody),
         headers: { "Content-Type": "application/json" },
@@ -100,10 +103,29 @@ function DocumentFiller() {
       const jsonString = JSON.stringify(translatedJsonObject, null, 2);
 
       setJsonstring(jsonString);
-      console.log("Translated JSON:", jsonString);
+      console.log("Translated JSON for Form:", jsonString);
+
+      // Step 5: NEW - Translate full document
+      const fullTranslationResponse = await fetch("http://localhost:3000/v1/fulltranslate/translate-full", {
+        method: "POST",
+        body: JSON.stringify({
+          language: currlang,
+          fullText: data_obj.fullText,
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!fullTranslationResponse.ok) throw new Error("Full document translation failed");
+
+      const fullTranslatedData = await fullTranslationResponse.json();
+      const translatedDocString = fullTranslatedData.output[0]?.target;
+      console.log("Full Translated Document:", translatedDocString);
+
+      setTranslatedDoc(translatedDocString || "Translation failed.");
       setRes(true);
+
     } catch (error) {
-      console.error("Error processing JSON:", error);
+      console.error("Error processing document:", error);
       setError(error.message || "An error occurred while processing the document.");
     } finally {
       setLoading(false);
@@ -111,17 +133,17 @@ function DocumentFiller() {
   };
 
   return (
-    <div className="flex h-screen bg-black ">
+    <div className="flex h-screen bg-black">
       <Sidebar />
       <div className="flex flex-col flex-1">
         <Navbar />
         <div className="p-6 flex-1 overflow-auto">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">Document Filler</h1>
-            
+            <h1 className="text-3xl font-bold mb-6 text-white">Document Filler</h1>
+
             <div className="bg-gray-900 rounded-lg p-6 mb-6">
               <h2 className="text-xl font-semibold mb-4 border-b border-gray-700 pb-2 text-white">Upload Document</h2>
-              
+
               <div className="mb-4">
                 <label className="block text-gray-400 mb-2">Select Language</label>
                 <select
@@ -146,49 +168,58 @@ function DocumentFiller() {
                   <option value="Sanskrit">Sanskrit</option>
                 </select>
               </div>
-              
+
               <div className="mb-4">
-                <label className="block text-gray-400 mb-2">Upload File (.docx)</label>
+                <label className="block text-gray-400 mb-2">Upload File (.docx or .pdf)</label>
                 <input
                   onChange={fileselector}
                   className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-3"
                   type="file"
                 />
-                <p className="mt-2 text-sm text-gray-500">Only .docx is supported</p>
+                <p className="mt-2 text-sm text-gray-500">Only .docx or .pdf is supported</p>
               </div>
-              
+
               <button
                 onClick={filesubmit}
                 disabled={loading}
                 className={`w-full p-3 rounded-lg text-lg font-medium ${
-                  loading 
-                    ? "bg-gray-700 cursor-not-allowed" 
-                    : "bg-blue-600 hover:bg-blue-700"
+                  loading ? "bg-gray-700 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
                 }`}
               >
                 {loading ? "Processing..." : "Upload & Process"}
               </button>
             </div>
-            
+
             {loading && (
-              <div className=" ml-106">
+              <div className="flex items-center ml-10">
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
-                <p className="ml-3">Processing document...</p>
+                <p className="ml-3 text-white">Processing document...</p>
               </div>
             )}
-            
+
             {error && (
               <div className="w-full bg-red-900 text-white p-4 rounded-lg mb-6">
                 <p className="font-bold">Error:</p>
                 <p>{error}</p>
               </div>
             )}
-            
+
             {res && (
-              <div className="bg-gray-900 rounded-lg p-6">
-                <h2 className="text-xl font-semibold mb-4 border-b border-gray-700 pb-2 text-white">Form Generator</h2>
-                <FormCreator initialData={JSON.parse(jsonstring)} lang={currlang} />
-              </div>
+              <>
+                {/* Full Document Translation */}
+                <div className="bg-gray-900 rounded-lg p-6 mb-6">
+                  <h2 className="text-xl font-semibold mb-4 border-b border-gray-700 pb-2 text-white">📃 Full Translated Document</h2>
+                  <div className="text-gray-300 whitespace-pre-line">
+                    {translatedDoc}
+                  </div>
+                </div>
+
+                {/* Form Generator */}
+                <div className="bg-gray-900 rounded-lg p-6">
+                  <h2 className="text-xl font-semibold mb-4 border-b border-gray-700 pb-2 text-white">📝 Form Generator</h2>
+                  <FormCreator initialData={JSON.parse(jsonstring)} lang={currlang} />
+                </div>
+              </>
             )}
           </div>
         </div>

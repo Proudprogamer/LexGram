@@ -46,7 +46,7 @@ function FormCreator({ initialData, lang }) {
           language: lang,
         };
         try {
-          const response = await fetch("https://lfbackend-hazel.vercel.app/v1/att/convert", {
+          const response = await fetch("http://localhost:3000/v1/att/convert", {
             method: "POST",
             body: JSON.stringify(body),
             headers: { "Content-Type": "application/json" },
@@ -93,7 +93,7 @@ function FormCreator({ initialData, lang }) {
         language: lang,
       };
 
-      const translationResponse = await fetch("https://lfbackend-hazel.vercel.app/v1/x/english/translate", {
+      const translationResponse = await fetch("http://localhost:3000/v1/x/english/translate", {
         method: "POST",
         body: JSON.stringify(translationBody),
         headers: { "Content-Type": "application/json" },
@@ -112,7 +112,7 @@ function FormCreator({ initialData, lang }) {
       console.log("📝 Raw Translated String:", translatedString);
 
       // Step 2: Send the translated string as plain text to Gemini for answer extraction
-      const geminiResponse = await fetch("https://lfbackend-hazel.vercel.app/api/gemini/extract-answers", {
+      const geminiResponse = await fetch("http://localhost:3000/api/gemini/extract-answers", {
         method: "POST",
         body: translatedString,
         headers: { "Content-Type": "text/plain" },
@@ -242,12 +242,7 @@ function FormCreator({ initialData, lang }) {
               ))}
             </div>
           </div>
-          <button
-            onClick={fillDocument}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
-          >
-            Fill Document & Download DOCX
-          </button>
+          
         </div>
       )}
     </div>
