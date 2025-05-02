@@ -152,7 +152,6 @@ function DocumentFiller() {
                   defaultValue=""
                 >
                   <option value="" disabled>Select a language...</option>
-                  <option value="Hindi">Hindi</option>
                   <option value="Telugu">Telugu</option>
                   <option value="Marathi">Marathi</option>
                   <option value="Malayalam">Malayalam</option>
@@ -164,7 +163,6 @@ function DocumentFiller() {
                   <option value="Nepali">Nepali</option>
                   <option value="Goan_Konkani">Goan Konkani</option>
                   <option value="Bodo">Bodo</option>
-                  <option value="Kannada">Kannada</option>
                   <option value="Sanskrit">Sanskrit</option>
                 </select>
               </div>

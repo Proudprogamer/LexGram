@@ -10,11 +10,13 @@ const { filereader } = require("./Routes/FileReader/filereader");
 const { extranslator } = require("./Routes/E-Xtranslator/E-X.translator");
 const { xetranslator } = require("./Routes/X-Etranslator/xetranslator");
 const { geminiService } = require("./Routes/geminiService");
+const { fulltranslator } = require("./Routes/FileReader/fulltranslator");
 
 const app = express();
 
+// ✨ Allow both Local and Deployed frontend
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "https://lawflow.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
@@ -32,6 +34,7 @@ app.use("/document", filereader);
 app.use("/v1/english", extranslator);
 app.use("/v1/x/english", xetranslator);
 app.use("/api/gemini", geminiService);
+app.use("/v1/fulltranslate", fulltranslator);
 
 app.listen(3000, () => {
   console.log(`🚀 Backend running on http://localhost:3000`);
