@@ -15,7 +15,7 @@ function SupremeCourt() {
     const body = JSON.stringify(Object.fromEntries(formData));
     
     try {
-      const response = await fetch(`https://lfbackend-hazel.vercel.app/supreme-court/${endpoint}`, {
+      const response = await fetch(`http://localhost:8000/supreme-court/${endpoint}`, {
         method: "POST",
         body: body,
         headers: { 'Content-Type': 'application/json' },

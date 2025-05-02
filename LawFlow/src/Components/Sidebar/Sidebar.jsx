@@ -13,7 +13,7 @@ function Sidebar(){
 
 
     return(
-        <div className={`translate-all duration-200 h-screen bg-black pl-[13px] pt-[10px] ${buttonstate ? "w-80" : "w-15"} z-1 border-r-gray-800 border-1 fixed`}>
+        <div className={`translate-all duration-200 h-screen bg-black pl-[15px] pt-[10px] ${buttonstate ? "w-80" : "w-15"} z-1 border-r-1 border-gray-800 fixed`}>
                     <div>
                         <button onClick={()=>{setbuttonstate(!buttonstate)}}>
                             {buttonstate ? 

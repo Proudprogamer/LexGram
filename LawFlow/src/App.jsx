@@ -11,10 +11,10 @@ export default function App() {
 
   return (
     <>
-      <div className="relative">
+      <div className="overflow-x-hidden">
         <Sidebar />
         <Navbar />
-        <div className="min-h-screen bg-black ml-15">
+        <div className="min-h-screen bg-black ml-[-40px] pl-26">
           {/* Hero Section with animated elements */}
           <div className="container mx-auto pt-24 px-6 md:px-12 ml-25 pt-60 mb-50">
             <div className="flex flex-col md:flex-row items-center justify-between">
