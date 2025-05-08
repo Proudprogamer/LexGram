@@ -46,12 +46,12 @@ function Navbar() {
     }, [showDropdown]);
 
     return (
-        <div>
-            <div className="flex bg-black w-full h-16 items-center border-b border-gray-800 fixed z-10">
-                {/* Logo and brand name */}
+        <div className="fixed top-0 left-0 right-0 z-50"> {/* Changed z-index and positioning */}
+            <div className="flex bg-black w-full h-16 items-center border-b border-gray-800">
+                {/* Logo and brand name - adjusted margin to account for sidebar */}
                 <button 
                     onClick={handleLogoClick}
-                    className="flex items-center ml-8 hover:opacity-80 transition-opacity duration-300"
+                    className="flex items-center ml-[75px] hover:opacity-80 transition-opacity duration-300"
                 >
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 
