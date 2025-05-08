@@ -6,18 +6,13 @@ function Navbar() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
 
-
-    // Check authentication status on mount and when localStorage changes
     useEffect(() => {
         const checkAuth = () => {
             const authToken = localStorage.getItem("authToken");
             setIsAuthenticated(!!authToken);
         };
 
-        // Initial check
         checkAuth();
-
-        // Listen for storage changes (in case user logs in/out in another tab)
         window.addEventListener('storage', checkAuth);
         
         return () => {
@@ -25,7 +20,6 @@ function Navbar() {
         };
     }, []);
 
-    // Handle logout
     const handleLogout = () => {
         localStorage.removeItem("authToken");
         setIsAuthenticated(false);
@@ -33,7 +27,11 @@ function Navbar() {
         navigate("/login");
     };
 
-    // Close dropdown when clicking outside
+    const handleLogoClick = () => {
+        navigate('/');
+        localStorage.setItem("current-tab", "home");
+    };
+
     useEffect(() => {
         if (showDropdown) {
             const handleClickOutside = (event) => {
@@ -51,7 +49,10 @@ function Navbar() {
         <div>
             <div className="flex bg-black w-full h-16 items-center border-b border-gray-800 fixed z-10">
                 {/* Logo and brand name */}
-                <div className="flex items-center ml-8" onClick={()=>navigate('/')}>
+                <button 
+                    onClick={handleLogoClick}
+                    className="flex items-center ml-8 hover:opacity-80 transition-opacity duration-300"
+                >
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 
                         fill="none" 
@@ -59,15 +60,13 @@ function Navbar() {
                         strokeWidth={1.75} 
                         stroke="currentColor" 
                         className="size-8 text-white"
-                        
                     >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
                     </svg>
-                    <h1 className="pl-2 text-2xl text-white font-bold cursor-default">
+                    <span className="pl-2 text-2xl text-white font-bold">
                         LexGram
-                    </h1>
-                </div>
-                
+                    </span>
+                </button>
             </div>
         </div>
     );
