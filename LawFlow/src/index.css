@@ -1,11 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Custom fonts and themes */
-@layer base {
-    :root {
-        --font-primary: "Montserrat", sans-serif;
-        --font-secondary: "Afacad Flux", sans-serif;
-    }
+@theme {
+    --font-primary : "Montserrat", "sans-serif";
+    --font-secondary : "Afacad Flux", "sans-serif";
 }
