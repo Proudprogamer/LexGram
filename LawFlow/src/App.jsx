@@ -81,11 +81,11 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white overflow-hidden">
       {/* Hamburger menu for mobile/tablet */}
-      <div className="lg:hidden">
+      <div className="lg:block">
         {/* Hamburger icon */}
         <button 
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="fixed top-3 right-6 z-50 p-2 rounded-md bg-blue-900/50 backdrop-blur-sm border border-gray-800"
+          className="fixed top-3 right-6 z-50 p-2 rounded-md bg-blue-900/50 backdrop-blur-sm border border-gray-800 lg:hidden"
         >
           {mobileMenuOpen ? (
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
@@ -144,18 +144,7 @@ export default function App() {
                     Document Filler
                   </a>
                 </li>
-                <li>
-                  <a 
-                    href="#" 
-                    className="flex items-center text-lg font-medium text-white hover:text-blue-400 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-3">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                    </svg>
-                    Legal Forum
-                  </a>
-                </li>
+                
                 <li>
                   <a 
                     href="#" 
@@ -196,7 +185,7 @@ export default function App() {
       
       <div className="lg:ml-20 mt-10">
         {/* Hero Section */}
-        <section className="relative pt-16 lg:pt-24 px-4 sm:px-6 lg:px-12 pb-20 ml-3">
+        <section className="relative pt-16 lg:pt-24 px-4 sm:px-6 lg:px-12 pb-20 ml-3 xl:mt-30">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
               {/* Left content */}
