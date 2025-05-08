@@ -30,6 +30,6 @@ app.use("/v1/x/english", xetranslator);
 app.use("/api/gemini", geminiService);
 app.use("/v1/fulltranslate", fulltranslator);
 
-app.listen(8000, () => {
-  console.log(`🚀 Backend running on http://localhost:8000`);
+app.listen(3000, () => {
+  console.log(`🚀 Backend running on http://localhost:3000`);
 });

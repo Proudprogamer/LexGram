@@ -47,7 +47,7 @@ function Navbar() {
 
     return (
         <div>
-            <div className="flex bg-black w-full h-16 items-center border-b border-gray-800 fixed z-10">
+            <div className="flex bg-black w-full h-16 items-center border-b border-gray-800 fixed z-20">
                 {/* Logo and brand name */}
                 <button 
                     onClick={handleLogoClick}

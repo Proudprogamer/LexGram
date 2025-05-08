@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 function Sidebar(){
 
     let [buttonstate, setbuttonstate] = useState(false); 
-    let [currtab, setcurrtab] = useState(localStorage.getItem("current-tab"));
+    let [currtab, setcurrtab] = useState(localStorage.getItem("current-tab")) || "home";
     const navigate = useNavigate();
 
     useEffect(()=>{
