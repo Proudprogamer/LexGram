@@ -31,5 +31,5 @@ app.use("/api/gemini", geminiService);
 app.use("/v1/fulltranslate", fulltranslator);
 
 app.listen(3000, () => {
-  console.log(`🚀 Backend running on http://localhost:3000`);
+  console.log(`🚀 Backend running on https://lexgram.onrender.com`);
 });

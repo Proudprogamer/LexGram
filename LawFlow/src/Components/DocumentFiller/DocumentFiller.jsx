@@ -65,7 +65,7 @@ function DocumentFiller() {
       formData.append("file", currfile);
 
       // Step 1: Send file to backend for AI-based key extraction
-      const response = await fetch("http://localhost:3000/document/reader", {
+      const response = await fetch("https://lexgram.onrender.com/document/reader", {
         method: "POST",
         body: formData,
       });
@@ -103,7 +103,7 @@ function DocumentFiller() {
         extractedKeys: extractedKeys,
       };
 
-      const translationResponse = await fetch("http://localhost:3000/v1/english/translate", {
+      const translationResponse = await fetch("https://lexgram.onrender.com/v1/english/translate", {
         method: "POST",
         body: JSON.stringify(translationBody),
         headers: { "Content-Type": "application/json" },
@@ -131,7 +131,7 @@ function DocumentFiller() {
       console.log("Translated JSON for Form:", jsonString);
 
       // Step 5: NEW - Translate full document
-      const fullTranslationResponse = await fetch("http://localhost:3000/v1/fulltranslate/translate-full", {
+      const fullTranslationResponse = await fetch("https://lexgram.onrender.com/v1/fulltranslate/translate-full", {
         method: "POST",
         body: JSON.stringify({
           language: currlang,

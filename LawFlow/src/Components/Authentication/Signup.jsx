@@ -25,7 +25,7 @@ function Signup() {
             }
             console.log('sending request with body' + body.message);
 
-            const response = await axios.post('http://localhost:3000/sms/send',
+            const response = await axios.post('https://lexgram.onrender.com/sms/send',
                 body,
                 {
                     headers: {
@@ -53,7 +53,7 @@ function Signup() {
             }
 
             if (otp == otp.toString()) {
-                const response = await axios.post('http://localhost:3000/user/new-user',
+                const response = await axios.post('https://lexgram.onrender.com/user/new-user',
                     body,
                     {
                         headers: {

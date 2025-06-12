@@ -16,7 +16,7 @@ function Login() {
         
         setIsLoading(true);
         try {
-            const response = await axios.post("http://localhost:3000/api/otp/send", {
+            const response = await axios.post("https://lexgram.onrender.com/api/otp/send", {
                 phoneNumber: number
             });
 
@@ -40,7 +40,7 @@ function Login() {
         
         setIsLoading(true);
         try {
-            const response = await axios.post("http://localhost:3000/api/otp/verify", {
+            const response = await axios.post("https://lexgram.onrender.com/api/otp/verify", {
                 phoneNumber: number,
                 otp: otp
             });

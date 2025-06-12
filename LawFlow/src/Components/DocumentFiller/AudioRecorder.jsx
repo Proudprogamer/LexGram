@@ -34,7 +34,7 @@ const AudioRecorder = () => {
           try
           {
 
-              const response = await fetch('http://localhost:3000/v1/att/convert',{
+              const response = await fetch('https://lexgram.onrender.com/v1/att/convert',{
               method : "POST",
               body : JSON.stringify(body),
               headers :{
