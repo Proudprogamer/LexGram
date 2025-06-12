@@ -8,23 +8,24 @@ export default function App() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Animation variants for staggered children animations
+  // Optimized animation variants for better performance
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
+        staggerChildren: 0.1,
+        duration: 0.3
       }
     }
   };
   
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6 }
+      transition: { duration: 0.4, ease: "easeOut" }
     }
   };
 
@@ -105,22 +106,25 @@ export default function App() {
           }`}
         >
           <div className="flex flex-col h-full p-8 pt-24">
-            <div className="flex items-center mb-12">
+            <div className="flex items-center justify-center mb-12">
               <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mr-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
                 </svg>
               </div>
-              <span className="text-xl font-bold text-white">LegalAssist</span>
+              <span className="text-xl font-bold text-white">LexGram</span>
             </div>
             
             <nav className="flex-1">
-              <ul className="space-y-6">
+              <ul className="space-y-6 text-center">
                 <li>
                   <a 
-                    href="#" 
-                    className="flex items-center text-lg font-medium text-white hover:text-blue-400 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center text-lg font-medium text-white hover:text-blue-400 transition-colors"
+                    onClick={() => {
+                      navigate('/');
+                      localStorage.setItem("current-tab", "home");
+                      setMobileMenuOpen(false)
+                    }}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-3">
                       <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
@@ -130,8 +134,7 @@ export default function App() {
                 </li>
                 <li>
                   <a 
-                    href="#" 
-                    className="flex items-center text-lg font-medium text-white hover:text-blue-400 transition-colors"
+                    className="flex items-center justify-center text-lg font-medium text-white hover:text-blue-400 transition-colors"
                     onClick={() => {
                       navigate('/document-filler');
                       localStorage.setItem("current-tab", "document-filler");
@@ -147,9 +150,12 @@ export default function App() {
                 
                 <li>
                   <a 
-                    href="#" 
-                    className="flex items-center text-lg font-medium text-white hover:text-blue-400 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center text-lg font-medium text-white hover:text-blue-400 transition-colors"
+                    onClick={() => {
+                      navigate('/track-status');
+                      localStorage.setItem("current-tab", "track-status");
+                      setMobileMenuOpen(false)
+                    }}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-3">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V19.5a2.25 2.25 0 0 0 2.25 2.25h.75m0-3.75h3.75m-3.75 3.75h3.75M9 21h3.75m3 0h3.75M9 3h3.75m3 0h3.75M9 6h3.75m3 0h3.75M9 9h3.75m3 0h3.75" />
@@ -183,25 +189,25 @@ export default function App() {
         <Sidebar />
       </div>
       
-      <div className="lg:ml-20 mt-10">
+      <div className="lg:ml-20 mt-30 xl:mt-10">
         {/* Hero Section */}
-        <section className="relative pt-16 lg:pt-24 px-4 sm:px-6 lg:px-12 pb-20 ml-3 xl:mt-30">
+        <section className="relative pt-16 lg:pt-24 px-4 sm:px-6 lg:px-12 pb-20 lg:ml-3 xl:mt-30">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
               {/* Left content */}
               <motion.div 
-                className="w-full lg:w-1/2 z-10"
-                initial={{ opacity: 0, y: 50 }}
+                className="w-full lg:w-1/2 z-10 text-center lg:text-left"
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               >
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gradient bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mb-6 leading-tight">
                   Professional Legal Solutions
                 </h1>
-                <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-lg">
+                <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0">
                   Expert advice and representation to navigate complex legal challenges with confidence and clarity.
                 </p>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                   <button 
                     onClick={() => {
                       navigate('/document-filler');
@@ -219,24 +225,24 @@ export default function App() {
               
               {/* Right content with animated logo */}
               <motion.div 
-                className="w-full lg:w-1/2 flex justify-center"
-                initial={{ opacity: 0, scale: 0.8 }}
+                className="w-full lg:w-1/2 flex justify-center lg:pl-50 xl:pl-90 hidden lg:block"
+                initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
+                transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
               >
                 <div className="relative">
                   {/* Glowing background */}
                   <div className="absolute inset-0 -z-10 bg-blue-600/20 blur-3xl rounded-full"></div>
                   
                   {/* Logo container */}
-                  <div className="w-48 h-48 sm:w-64 sm:h-64 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center shadow-xl shadow-blue-600/30 p-4">
+                  <div className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center shadow-xl shadow-blue-600/30 p-4">
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" 
                       fill="none" 
                       viewBox="0 0 24 24" 
                       strokeWidth={1.5} 
                       stroke="currentColor" 
-                      className="w-24 h-24 text-white"
+                      className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 text-white"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
                     </svg>
@@ -256,7 +262,7 @@ export default function App() {
           className="py-20 px-4 sm:px-6 lg:px-12"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           variants={containerVariants}
         >
           <div className="max-w-7xl mx-auto">
@@ -268,15 +274,15 @@ export default function App() {
               <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
             </motion.div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {services.map((service, index) => (
                 <motion.div 
                   key={index}
                   variants={itemVariants}
-                  className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl overflow-hidden hover:border-blue-600/50 transition-all duration-300 group"
+                  className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl overflow-hidden hover:border-blue-600/50 transition-all duration-300 group mx-auto max-w-sm lg:max-w-none"
                 >
-                  <div className="p-6">
-                    <div className="bg-blue-900/20 rounded-lg w-16 h-16 flex items-center justify-center mb-6 group-hover:bg-blue-900/30 transition-all duration-300">
+                  <div className="p-6 text-center lg:text-left">
+                    <div className="bg-blue-900/20 rounded-lg w-16 h-16 flex items-center justify-center mb-6 group-hover:bg-blue-900/30 transition-all duration-300 mx-auto lg:mx-0">
                       {service.icon}
                     </div>
                     <h3 className="text-xl font-semibold mb-4 text-white group-hover:text-blue-400 transition-colors duration-300">
@@ -297,7 +303,7 @@ export default function App() {
           className="py-20 px-4 sm:px-6 lg:px-12 relative overflow-hidden"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           variants={containerVariants}
         >
           <div className="max-w-7xl mx-auto">
@@ -312,22 +318,22 @@ export default function App() {
             {/* Steps - Timeline for desktop, Cards for mobile */}
             <div className="relative">
               {/* Mobile/Tablet view - stacked cards */}
-              <div className="lg:hidden space-y-8">
+              <div className="lg:hidden space-y-8 max-w-2xl mx-auto">
                 {steps.map((step, index) => (
                   <motion.div 
                     key={index}
                     variants={itemVariants}
-                    className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6"
+                    className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 text-center"
                   >
-                    <div className="flex items-center mb-4">
-                      <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white flex items-center justify-center text-xl font-bold mr-4">
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white flex items-center justify-center text-xl font-bold mb-4">
                         {step.number}
                       </div>
                       <h3 className="text-xl font-semibold text-white">
                         {step.title}
                       </h3>
                     </div>
-                    <p className="text-gray-400 pl-16">
+                    <p className="text-gray-400">
                       {step.description}
                     </p>
                   </motion.div>
@@ -399,30 +405,14 @@ export default function App() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
                   </svg>
                 </div>
-                <span className="text-xl font-bold text-white">LegalAssist</span>
+                <span className="text-xl font-bold text-white">LexGram</span>
               </div>
               <p className="text-gray-400 mt-2 max-w-md">Providing professional legal solutions and document assistance for everyone.</p>
             </div>
-            <div className="flex gap-6">
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-                </svg>
-              </a>
-            </div>
+            
           </div>
           <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-            © {new Date().getFullYear()} LegalAssist. All rights reserved.
+            © {new Date().getFullYear()} LexGram. All rights reserved.
           </div>
         </footer>
       </div>
