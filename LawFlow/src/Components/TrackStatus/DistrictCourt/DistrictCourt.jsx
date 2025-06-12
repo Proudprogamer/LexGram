@@ -15,7 +15,7 @@ function DistrictCourt() {
     const body = JSON.stringify(Object.fromEntries(formData));
 
     try {
-      const response = await fetch(`https://lexgram.onrender.com/district-court/${endpoint}`, {
+      const response = await fetch(`http://localhost:3000/district-court/${endpoint}`, {
         method: "POST",
         body: body,
         headers: { 'Content-Type': 'application/json' },

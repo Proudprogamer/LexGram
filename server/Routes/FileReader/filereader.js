@@ -7,10 +7,8 @@ const path = require("path");
 require("dotenv").config();
 const Groq = require("groq-sdk");
 const Mammoth = require("mammoth");
-const { GoogleGenerativeAI } = require("@google/generative-ai"); // Gemini API
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY); // Gemini API
 
 const filereader = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -51,45 +49,30 @@ filereader.post("/reader", upload.single("file"), async (req, res) => {
 
         console.log("Extracted Text:", extractedText);
 
-        // ✅ AI API Call to Extract Fields (only fields for form)
+        // ✅ Prompt for Groq
         const prompt = `
-        Extract only the fields that require user input from the provided document text. Ignore any sections labeled "For Office Use Only," "Post Office Use Only," or similar.
-        Do not extract fields that require filling by an authorized officer.
-        Structure the response as a JSON object where:
-        - Each key is the field name.
-        - Each value is an empty string (for user input).
-        - Do not include any additional text or explanations.
+Extract only the fields that require user input from the provided document text. Ignore any sections labeled "For Office Use Only," "Post Office Use Only," or similar.
+Do not extract fields that require filling by an authorized officer.
+Structure the response as a JSON object where:
+- Each key is the field name.
+- Each value is an empty string (for user input).
+- Do not include any additional text or explanations.
 
-        \n\nDocument Text:\n${extractedText}
+\n\nDocument Text:\n${extractedText}
         `;
 
-        let jsonResponse = "{}";
+        const chat = await groq.chat.completions.create({
+            messages: [{ role: "user", content: prompt }],
+            model: "llama-3.3-70b-versatile",
+        });
 
-        try {
-            // Try Gemini AI first
-            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-            const response = await model.generateContent(prompt);
-            jsonResponse = response.response.text(); // Gemini's response
-
-            if (!jsonResponse.includes("{")) throw new Error("Invalid response from Gemini"); // Fallback if Gemini fails
-        } catch (err) {
-            console.log("Gemini failed. Trying OpenAI...");
-
-            // Fallback to OpenAI GPT-4
-            const chat = await groq.chat.completions.create({
-                messages: [{ role: "user", content: prompt }],
-                model: "llama-3.3-70b-versatile",
-            });
-
-            jsonResponse = chat.choices[0]?.message?.content || "{}";
-        }
+        const jsonResponse = chat.choices[0]?.message?.content || "{}";
 
         console.log("Extracted JSON Response:", jsonResponse);
 
-        // 🔥 FINAL RESPONSE: Send both `response` and `fullText`
         res.json({
-            response: jsonResponse,   // extracted fields for form
-            fullText: extractedText   // full document text for full translation
+            response: jsonResponse,
+            fullText: extractedText
         });
 
     } catch (error) {

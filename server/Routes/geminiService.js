@@ -27,46 +27,37 @@ router.post("/extract-answers", async (req, res) => {
       Read the text carefully and identify field names and their corresponding values, then apply these specific formatting rules:
 
       1. DATES:
-         - Convert text dates like "twenty-first March two thousand twenty-four" to standard format "21-03-2024"
-         - Standardize all dates to DD-MM-YYYY format
+        - Convert text dates like "twenty-first March two thousand twenty-four" to standard format "21-03-2024"
+        - Standardize all dates to DD-MM-YYYY format
 
       2. PHONE NUMBERS:
-         - Format any phone numbers consistently (e.g., "+91-XXXXX-XXXXX" or appropriate regional format)
-         - Remove extra words like "phone", "mobile", "number" from the actual value
+        - Format phone numbers consistently (e.g., "+91-XXXXX-XXXXX")
+        - Remove extra words like "phone", "mobile", "number"
 
       3. NUMERIC VALUES:
-         - If a field name suggests a number (account number, ID, etc.) but the value is in words, convert to digits
-         - For example, "account number: five six seven eight" becomes "account_number": "5678"
-         - However, if the field explicitly asks for the number in words, keep it as words
+        - Convert spelled-out numbers to digits where appropriate (e.g., "account number: five six seven eight" → 5678)
 
       4. ADDRESSES:
-         - Replace "by" with "/" in addresses for location references
-         - Format addresses consistently
+        - Replace "by" with "/" in addresses for location references
+        - Format addresses consistently
 
       5. EMAIL ADDRESSES:
-         - Replace phrases like "at the rate of" with "@"
-         - Ensure proper email formatting
+        - Replace "at the rate of" with "@", ensure valid formatting
 
       6. DESCRIPTIVE TEXT:
-         - For any field that contains longer descriptive text (like comments, descriptions, feedback)
-         - Improve and professionalize the language while preserving the meaning
-         - Fix grammar, spelling, and punctuation errors
-         - Use more professional vocabulary and phrasing
-         - Remove casual language, slang, or unnecessary repetition
-         - Keep the professionalized text concise but complete
-
-      Create a valid JSON object with these formatted key-value pairs.
+        - Professionalize the language: correct grammar, spelling, and punctuation
+        - Maintain meaning while removing casual/slang expressions
 
       Important:
       - Do NOT make up or add any information that's not in the text
-      - Remove any trailing commas from values
-      - Ensure the resulting JSON is properly formatted
-      - Return ONLY the JSON object, nothing else
-      - Do NOT include any markdown code blocks (like \`\`\`json) in your response.
+      - If a value is missing or not clearly present, set it explicitly as null (without quotes)
+      - Ensure the resulting JSON is properly formatted and valid
+      - Do NOT include any markdown code blocks or extra text — return only the JSON object
 
-      Here's the text:
+      Here’s the text:
       ${inputText}
-    `;
+      `;
+
 
     // Use a suitable Groq model for structured output
     const modelName = "llama3-8b-8192"; // Or "llama3-70b-8192" or "mixtral-8x7b-32768"
