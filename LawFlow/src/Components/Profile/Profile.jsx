@@ -22,7 +22,7 @@ function Profile() {
 
     const fetchUserPosts = async () => {
         try {
-            const response = await fetch("http://localhost:3000/forum/user-posts", {
+            const response = await fetch("https://lexgram.onrender.com/forum/user-posts", {
                 method: "GET",
                 headers: { "Authorization": `Bearer ${localStorage.getItem("authToken")}` }
             });
